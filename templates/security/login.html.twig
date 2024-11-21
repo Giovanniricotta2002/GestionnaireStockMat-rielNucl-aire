@@ -8,8 +8,6 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-{{csrf}}
-
         {% if app.user %}
             <div class="mb-3">
                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
@@ -22,7 +20,7 @@
         <label for="password">Password</label>
         <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
 
-        <input type="text" name="_csrf_token"
+        <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
 
