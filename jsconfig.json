@@ -1,0 +1,9 @@
+{
+    "include": [
+        "./assets/**/*"
+    ],
+    "compilerOptions": {
+        "sourceMap": true,
+        "baseUrl": ".",
+    }
+}

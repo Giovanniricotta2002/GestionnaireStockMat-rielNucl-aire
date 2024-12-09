@@ -1,0 +1,27 @@
+{
+  "name": "GestionnaireStockMat-rielNucl-aire",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:Giovanniricotta2002/GestionnaireStockMat-rielNucl-aire.git",
+  "author": "Gio <giovanni.ricotta@ynov.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@babel/core": "^7.17.0",
+    "@babel/preset-env": "^7.16.0",
+    "@symfony/webpack-encore": "^5.0.1",
+    "core-js": "^3.39.0",
+    "html5-qrcode": "^2.3.8",
+    "qr-scanner": "^1.4.2",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^4.9.1 || ^5.0.1"
+  },
+  "devDependencies": {
+    "webpack-notifier": "^1.15.0"
+  }
+}

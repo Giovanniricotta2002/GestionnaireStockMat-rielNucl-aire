@@ -30,11 +30,17 @@ class CSVController extends AbstractController
             $csvFileName->importData();
         }
 
-
-
         return $this->render('csv/index.html.twig', [
             'controller_name' => 'CSVController',
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/import/qrcode', name: '_import_qrcode')]
+    public function importQrCode(Request $request): Response
+    {
+        return $this->render('csv/qrcode.html.twig', [
+            'controller_name' => 'CSVControllerQrCode',
         ]);
     }
 }
