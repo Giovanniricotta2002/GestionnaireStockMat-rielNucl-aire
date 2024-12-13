@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Form\ImportFileType;
 use App\Service\FileUploader;
 use App\Tools\ImportFile;
+use chillerlan\QRCode\QRCode;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/csv', name: 'app_csv')]
 class CSVController extends AbstractController
@@ -36,11 +38,14 @@ class CSVController extends AbstractController
         ]);
     }
 
-    #[Route('/import/qrcode', name: '_import_qrcode')]
-    public function importQrCode(Request $request): Response
+    #[Route('/generated/qrcode', name: '_generated_qrcode')]
+    public function generatedQrCode(Request $request): Response
     {
+        $data = $this->generateUrl('app_csv_import', ['id' => 455], UrlGeneratorInterface::ABSOLUTE_URL);
+
         return $this->render('csv/qrcode.html.twig', [
             'controller_name' => 'CSVControllerQrCode',
+            'd' => (new QRCode)->render($data),
         ]);
     }
 }

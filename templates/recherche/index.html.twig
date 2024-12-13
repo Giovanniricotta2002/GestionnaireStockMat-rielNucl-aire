@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('tab') }}
+{% endblock %}
+
+
+
+
+{% block body %}
+{% include "form.html.twig" %}
+    {# {{ datas|json_encode() }} #}
+    <br>
+    {% embed 'tab.html.twig' %}
+        {% block row %}
+             <tr>
+                    <td scope="row">{{data.id}}</td>
+                    <td scope="row">{{data.description}}</td>
+                    <td scope="row">{{data.productCol}}</td>
+                    <td scope="row">{{data.dateIntsall|date("m/d/Y H:i:s")}}</td>
+                    <td scope="row">{{data.dateInspect|date("m/d/Y H:i:s")}}</td>
+                    <td scope="row">{{data.status.label}}</td>
+                </tr>
+        {% endblock %}
+    {% endembed %}
+    
+{# {{ data }} #}
+{% endblock %}

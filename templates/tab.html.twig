@@ -1,0 +1,18 @@
+<table>
+	<thead>
+		<tr>
+			{% for name in dataKeys   %}
+				<th scope="col">{{name}}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for data in datas %}
+            {% block row %}
+                <tr>
+                    <td scope="row"></td>
+                </tr>
+            {% endblock %}
+		{% endfor %}
+	</tbody>
+</table>
