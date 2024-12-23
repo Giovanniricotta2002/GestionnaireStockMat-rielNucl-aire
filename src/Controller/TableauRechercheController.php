@@ -44,7 +44,6 @@ class TableauRechercheController extends AbstractController
         if ($from->isSubmitted() && $from->isValid()) {
 
             $recherche = $from->getData();
-            // dd($from->get('productCol'));
 
             $criteria = [];
             if ($recherche->getProductCol() ?? false) {
@@ -67,7 +66,6 @@ class TableauRechercheController extends AbstractController
             if ($recherche->getStatus()) {
                 $criteria['status'] = $recherche->getStatus()->value;
             }
-// dd($criteria);
 
             $datas = $miRepository->findParms($criteria);
             $datas = $this->serializer->normalize($datas, 'json');
@@ -77,6 +75,7 @@ class TableauRechercheController extends AbstractController
                 'datas' => $datas,
                 'dataKeys' => $datasKey,
                 'form' => $from,
+                'action' => true
             ]);
         }
 
@@ -89,4 +88,5 @@ class TableauRechercheController extends AbstractController
             'form' => $from,
         ]);
     }
+
 }

@@ -30,6 +30,9 @@ class MaterielInspection
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(inversedBy: 'materielInspect')]
+    private ?Task $task = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class MaterielInspection
     public function setStatus(Status $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTask(): ?Task
+    {
+        return $this->task;
+    }
+
+    public function setTask(?Task $task): static
+    {
+        $this->task = $task;
 
         return $this;
     }

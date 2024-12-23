@@ -45,8 +45,19 @@ class SecurityController extends AbstractController
         $hashedPassword = $passwordHasher->hashPassword($user, $plaintextPassword);
 
         $user->setPassword($hashedPassword);
+        $user->setRoles(["ROLE_USER"]);
         
+        $admin = new Utilisateur();
+        $admin->setUsername("admin");
+        
+        $plaintextPassword = "admin";
+        $hashedPassword = $passwordHasher->hashPassword($admin, $plaintextPassword);
+
+        $admin->setPassword($hashedPassword);
+        $admin->setRoles(["ROLE_ADMIN"]);
+
         $em->persist($user);
+        $em->persist($admin);
         $em->flush();
 
         return $this->render('security/login.html.twig', [

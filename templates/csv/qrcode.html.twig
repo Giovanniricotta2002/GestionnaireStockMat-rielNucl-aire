@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CSVController QrCode!{% endblock %}
+{% block title %}QrCode{% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
@@ -10,7 +10,7 @@
 
 
 {% block body %}
-<h1>Scan from WebCam:</h1>
+{# <h1>Scan from WebCam:</h1>
 <div id="video-container">
     <video id="qr-video"></video>
 </div>
@@ -59,8 +59,8 @@
 <br>
 <button id="start-button">Start</button>
 <button id="stop-button">Stop</button>
-<hr>
+<hr> #}
 
-
-<img src="{{d}}" alt="QR Code" style="width: 12rem;"/>
+<h1>Qrcode pour la liste de test machine</h1>
+<img src="{{qrcode}}" alt="QR Code" style="width: 12rem;"/>
 {% endblock %}

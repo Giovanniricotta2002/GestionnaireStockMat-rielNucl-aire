@@ -1,9 +1,12 @@
-<table>
+<table id="test">
 	<thead>
 		<tr>
 			{% for name in dataKeys   %}
 				<th scope="col">{{name}}</th>
 			{% endfor %}
+			{% if action %}
+				<th scope="col">Action</th>
+			{% endif %}
 		</tr>
 	</thead>
 	<tbody>

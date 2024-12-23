@@ -4,6 +4,7 @@
 
 {% block javascripts %}
 {{ parent() }}
+{{ encore_entry_script_tags('tabAction') }}
 {% endblock %}
 
 {% block stylesheets %}
@@ -17,6 +18,11 @@
 {% include "form.html.twig" %}
     {# {{ datas|json_encode() }} #}
     <br>
+        <button id="get-values-button">Obtenir les valeurs sélectionnées</button>
+        <a id="dynamic-link" href="#" data-url-template="{{ path('app_csv_generated_qrcode', {'ids': 'PLACEHOLDER'}) }}">
+            Cree un Linsting de test
+        </a>
+    <br>
     {% embed 'tab.html.twig' %}
         {% block row %}
              <tr>
@@ -26,6 +32,15 @@
                     <td scope="row">{{data.dateIntsall|date("m/d/Y H:i:s")}}</td>
                     <td scope="row">{{data.dateInspect|date("m/d/Y H:i:s")}}</td>
                     <td scope="row">{{data.status.label}}</td>
+                    {% if action %}
+						<td scope="row">
+                        <label>
+                            <input type="checkbox" id="action" name="miId" value="{{data.id}}" class="row-checkbox"/>
+                            Ajouté
+                        </label>
+                        </td>
+					{% endif %}
+
                 </tr>
         {% endblock %}
     {% endembed %}
