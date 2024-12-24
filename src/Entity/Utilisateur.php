@@ -31,7 +31,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'utilisateurAffect', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'utilisateurAffect')]
     private ?Task $task = null;
 
     public function getId(): ?int
@@ -116,18 +116,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setTask(?Task $task): static
     {
-        // unset the owning side of the relation if necessary
-        if ($task === null && $this->task !== null) {
-            $this->task->setUtilisateurAffect(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($task !== null && $task->getUtilisateurAffect() !== $this) {
-            $task->setUtilisateurAffect($this);
-        }
-
         $this->task = $task;
 
         return $this;
     }
+
 }

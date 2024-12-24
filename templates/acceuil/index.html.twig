@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Acceuil!{% endblock %}
+
+{% block body %}
+<lu>
+    <li></li>
+</lu>
+
+<div class="cards">
+  <article class="card">
+    <header>
+      <h2>Vous</h2>
+    </header>
+    {# <img src="http://placehold.it/161x81" alt="Hot air balloons"> #}
+    <div class="content">
+      <ul>
+        <li>
+            Username: {{ user.username }}
+        </li>
+        <li>
+            Roles: <br>
+            {% for role in user.roles %}
+                <li>{{role}}</li>
+            {% endfor %}
+        </li>
+        <li>
+            Tache: <br>
+            {% for task in user.task %}
+                <li>{{task.name}}</li>
+            {% endfor %}
+        </li>
+      </ul>
+    </div>
+
+  </article>
+</div>
+
+<style>
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-gap: 20px;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: max-content 200px 1fr;
+}
+
+.card img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+</style>
+{% endblock %}

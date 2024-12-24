@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+
+<div class="cards">
+  <article class="card">
+    <header>
+      <h2>Vous</h2>
+    </header>
+    {# <img src="http://placehold.it/161x81" alt="Hot air balloons"> #}
+    <div class="content">
+      <ul>
+        <li>
+            Username: {{ user.username }}
+        </li>
+        <li>
+            Roles: <br>
+            {% for role in user.roles %}
+                <li>{{role}}</li>
+            {% endfor %}
+        </li>
+        <li>
+            Tache: <br>
+            {% for task in user.task %}
+                <li>{{task.name}}</li>
+            {% endfor %}
+        </li>
+      </ul>
+    </div>
+
+  </article>
+</div>
+
+<div class="cards">
+    <article class="card">
+        <header>
+            <h2>Tous les utilisateurs</h2>
+        </header>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <strong class="me-auto">Notification</strong>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% include "form.html.twig" %}
+        <br>
+        {% embed 'tab.html.twig' %}
+            {% block row %}
+                <tr>
+                    <td scope="row">{{data.id}}</td>
+                    <td scope="row">{{data.username}}</td>
+                    <td scope="row">{{ data.roles|json_encode }}</td>
+                </tr>
+            {% endblock %}
+        {% endembed %}
+    </article>
+</div>
+
+
+
+<style>
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-gap: 20px;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: max-content 200px 1fr;
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+caption {
+  caption-side: bottom;
+  padding: 10px;
+  font-weight: bold;
+}
+
+thead,
+tfoot {
+  background-color: rgb(228 240 245);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
+
+td:last-of-type {
+  text-align: center;
+}
+
+tbody > tr:nth-of-type(even) {
+  background-color: rgb(237 238 242);
+}
+
+tfoot th {
+  text-align: right;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+<menu class="menu">
+  <li><a class="btn" href="{{ path("app_acceuil_index") }}">Acceuil</a></li>
+  <li><a class="btn" href="{{ path("app_recherche_init") }}">Tableau de Recherche</a></li>
+  <li><a class="btn">Tache [WIP]</a></li>
+</menu>
+
+<style>
+.menu, ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  width: 400px;
+}
+
+li {
+  flex-grow: 1;
+}
+
+.btn {
+  width: 100%;
+  text-decoration: none;
+  border: 1px black solid;
+  padding: 12px;
+}
+
+</style>

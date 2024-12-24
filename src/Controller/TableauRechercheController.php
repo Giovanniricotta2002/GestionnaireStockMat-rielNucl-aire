@@ -86,6 +86,7 @@ class TableauRechercheController extends AbstractController
             'datas' => $datas,
             'dataKeys' => $datasKey,
             'form' => $from,
+            'action' => true,
         ]);
     }
 
