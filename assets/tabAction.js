@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         console.log('Lignes sélectionnées :', selectedRows);
-        alert(JSON.stringify(selectedRows, null, 2)); // Affiche les résultats*
+        // alert(JSON.stringify(selectedRows, null, 2)); // Affiche les résultats*
 
         const request = await fetch('/task/new', {
             method: 'POST',

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ImportFileType;
 use App\Service\FileUploader;
 use App\Tools\ImportFile;
+use Doctrine\ORM\EntityManagerInterface;
 use chillerlan\QRCode\QRCode;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class CSVController extends AbstractController
     }
 
     #[Route('/generated/qrcode', name: '_generated_qrcode')]
-    public function generatedQrCode(Request $request): Response
+    public function generatedQrCode(Request $request, EntityManagerInterface $em): Response
     {
         dd($request->query->get('ids'));
         $data = $this->generateUrl('app_task_index', ['id' => 455], UrlGeneratorInterface::ABSOLUTE_URL);
