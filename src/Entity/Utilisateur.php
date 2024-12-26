@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,8 +33,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurAffect')]
-    private ?Task $task = null;
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'utilisateurAffect')]
+    private Collection $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,16 +119,33 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getTask(): ?Task
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
     {
-        return $this->task;
+        return $this->tasks;
     }
 
-    public function setTask(?Task $task): static
+    public function addTask(Task $task): static
     {
-        $this->task = $task;
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setUtilisateurAffect($this);
+        }
 
         return $this;
     }
 
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getUtilisateurAffect() === $this) {
+                $task->setUtilisateurAffect(null);
+            }
+        }
+
+        return $this;
+    }
 }

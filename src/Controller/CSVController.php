@@ -42,7 +42,7 @@ class CSVController extends AbstractController
     #[Route('/generated/qrcode', name: '_generated_qrcode')]
     public function generatedQrCode(Request $request, EntityManagerInterface $em): Response
     {
-        dd($request->query->get('ids'));
+        // dd($request->query->get('ids'));
         $data = $this->generateUrl('app_task_index', ['id' => 455], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->render('csv/qrcode.html.twig', [

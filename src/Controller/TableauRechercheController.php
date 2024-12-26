@@ -80,7 +80,8 @@ class TableauRechercheController extends AbstractController
         }
 
         $datas = $miRepository->findAll();
-        $datas = $this->serializer->normalize($datas, 'json');
+        // dd($this->serializer->serialize($datas, 'json'));
+        // $datas = $this->serializer->normalize($datas, 'json');
 
         return $this->render('recherche/index.html.twig', [
             'datas' => $datas,

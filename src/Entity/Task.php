@@ -24,16 +24,12 @@ class Task
     #[ORM\OneToMany(targetEntity: MaterielInspection::class, mappedBy: 'task')]
     private Collection $materielInspect;
 
-    /**
-     * @var Collection<int, Utilisateur>
-     */
-    #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'task')]
-    private Collection $utilisateurAffect;
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    private ?Utilisateur $utilisateurAffect = null;
 
     public function __construct()
     {
         $this->materielInspect = new ArrayCollection();
-        $this->utilisateurAffect = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,32 +79,14 @@ class Task
         return $this;
     }
 
-    /**
-     * @return Collection<int, Utilisateur>
-     */
-    public function getUtilisateurAffect(): Collection
+    public function getUtilisateurAffect(): ?Utilisateur
     {
         return $this->utilisateurAffect;
     }
 
-    public function addUtilisateurAffect(Utilisateur $utilisateurAffect): static
+    public function setUtilisateurAffect(?Utilisateur $utilisateurAffect): static
     {
-        if (!$this->utilisateurAffect->contains($utilisateurAffect)) {
-            $this->utilisateurAffect->add($utilisateurAffect);
-            $utilisateurAffect->setTask($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUtilisateurAffect(Utilisateur $utilisateurAffect): static
-    {
-        if ($this->utilisateurAffect->removeElement($utilisateurAffect)) {
-            // set the owning side to null (unless already changed)
-            if ($utilisateurAffect->getTask() === $this) {
-                $utilisateurAffect->setTask(null);
-            }
-        }
+        $this->utilisateurAffect = $utilisateurAffect;
 
         return $this;
     }

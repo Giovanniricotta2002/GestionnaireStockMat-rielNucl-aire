@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{# {{ encore_entry_script_tags('tabAction') }} #}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('tab') }}
+{% endblock %}
+
+{% block body %}
+{# {% include "form.html.twig" %} #}
+    {# {{ datas|json_encode() }} #}
+    <br>
+        {# <button id="get-values-button">Obtenir les valeurs sélectionnées</button>
+        <a id="dynamic-link" href="#" data-url-template="{{ path('app_csv_generated_qrcode', {'ids': 'PLACEHOLDER'}) }}">
+            Cree un Linsting de test
+        </a> #}
+    <br>
+    {% embed 'tab.html.twig' %}
+        {% block row %}
+            <tr>
+                <td scope="row">{{data["id"]}}</td>
+                <td scope="row">{{data["name"]}}</td>
+                {% if data["userIdentifier"] is not empty %}
+                    <td scope="row">{{data["userIdentifier"]}}</td>
+                {% else %}
+                    <td scope="row">Aucun Utilisateur affecter</td>
+                {% endif %}
+                <td scope="row">
+                    <img src="{{data["qrcode"]}}" style="width: 12rem;"/>
+                </td>
+                {% if action %}
+                    <td scope="row">
+                        <a href="{{ path('app_task_edit', {'taskId': data.id}) }}">
+                            Configuré
+                        </a>
+                        {% if data["qrcode"] is not empty %}
+                            <a href="{{ path('app_)}}"></a>
+                        {% endif %}
+                    
+                    {# <label>
+                        <input type="checkbox" id="action" name="miId" value="{{data.id}}" class="row-checkbox"/>
+                        Générer un QRcode
+                    </label> #}
+                    </td>
+                {% endif %}
+
+            </tr>
+        {% endblock %}
+    {% endembed %}
+    
+{% endblock %}
