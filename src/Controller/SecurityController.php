@@ -19,7 +19,6 @@ class SecurityController extends AbstractController
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -37,31 +36,30 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/init', name: 'init', methods: ['GET'])]
-    public function init(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response {
+    public function init(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    {
         $user = new Utilisateur();
-        $user->setUsername("gior");
-        
-        $plaintextPassword = "gior";
+        $user->setUsername('gior');
+
+        $plaintextPassword = 'gior';
         $hashedPassword = $passwordHasher->hashPassword($user, $plaintextPassword);
 
         $user->setPassword($hashedPassword);
-        $user->setRoles(["ROLE_USER"]);
-        
+        $user->setRoles(['ROLE_USER']);
+
         $admin = new Utilisateur();
-        $admin->setUsername("admin");
-        
-        $plaintextPassword = "admin";
+        $admin->setUsername('admin');
+
+        $plaintextPassword = 'admin';
         $hashedPassword = $passwordHasher->hashPassword($admin, $plaintextPassword);
 
         $admin->setPassword($hashedPassword);
-        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setRoles(['ROLE_ADMIN']);
 
         $em->persist($user);
         $em->persist($admin);
         $em->flush();
 
-        return $this->render('security/login.html.twig', [
-            'error' => ''
-        ]);
+        return $this->redirectToRoute($this->generateUrl('app_login'));
     }
 }

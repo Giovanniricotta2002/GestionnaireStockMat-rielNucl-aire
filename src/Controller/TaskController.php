@@ -6,6 +6,8 @@ use App\Entity\MaterielInspection;
 use App\Entity\Task;
 use App\Repository\MaterielInspectionRepository;
 use App\Repository\TaskRepository;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use chillerlan\QRCode\QRCode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,20 +28,20 @@ class TaskController extends AbstractController
     private Serializer $serializer;
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
     ) {
-        $normaliser = [new ObjectNormalizer()];
+        $normaliser = [new DateTimeNormalizer(['datetime_format' => 'Y-m-d\TH:i:s']),  new ObjectNormalizer()];
         $encoder = [new JsonEncoder(), new CsvEncoder(), new YamlEncoder(), new XmlEncoder()];
 
         $this->serializer = new Serializer($normaliser, $encoder);
     }
-    
+
     #[Route('/', name: '_index')]
     public function index(TaskRepository $tRepository): Response
     {
         $datas = $tRepository->findAll();
         $dataKeys = [
-            'Id', 'Nom', 'Utilisateur Affecter', 'QrCode'
+            'Id', 'Nom', 'Utilisateur Affecter', 'QrCode',
         ];
 
         $unset = [];
@@ -47,10 +49,19 @@ class TaskController extends AbstractController
             $unset[] = [
                 'id' => $data->getId(),
                 'name' => $data->getName(),
-                'userIdentifier' => $data->getUtilisateurAffect(),
-                'qrcode' => $data->getUtilisateurAffect() == null 
-                    ? null 
-                    : (new QRCode)->render($this->generateUrl('app_task_index', ['id' => $data->getId()], UrlGeneratorInterface::ABSOLUTE_URL)),
+                'userIdentifier' => $data->getUtilisateurAffect() == null
+                    ? null
+                    : $data->getUtilisateurAffect()->getUserIdentifier(),
+                'qrcode' => null == $data->getUtilisateurAffect()
+                    ? null
+                    : (new QRCode())
+                        ->render(
+                            $this->generateUrl(
+                                'app_task_index',
+                                ['id' => $data->getId()],
+                                UrlGeneratorInterface::ABSOLUTE_URL
+                            )
+                        ),
             ];
         }
 
@@ -61,7 +72,7 @@ class TaskController extends AbstractController
         return $this->render('task/index.html.twig', [
             'datas' => $datas,
             'dataKeys' => $dataKeys,
-            'action' => true
+            'action' => true,
         ]);
     }
 
@@ -70,7 +81,7 @@ class TaskController extends AbstractController
     {
         $content = $this->serializer->decode($request->getContent(), 'json');
         $materielInspectionArrays = $miRepository->findBy(['id' => $content]);
-        
+
         $task = new Task();
         array_map(fn (MaterielInspection $mi) => $task->addMaterielInspect($mi), $materielInspectionArrays);
         $task->setName('Aucun nom');
@@ -80,14 +91,30 @@ class TaskController extends AbstractController
 
         $this->em->flush();
 
-        dd($task->getId());
-
         return $this->json([$content]);
     }
 
-    #[Route('/edit/{taskId<\d*>}', name: '_edit')]
-    public function edit(Task $taskId): Response
+    #[Route('/action/{taskId<\d*>}', name: '_action')]
+    public function edit(Task $taskId, MaterielInspectionRepository $miRepository): Response
     {
-        return $this->render('task/index.html.twig', []);
+        $data = array_map(fn (MaterielInspection $mi) => $this->serializer->normalize($mi, 'json', [
+            AbstractNormalizer::ATTRIBUTES => [
+                'id',
+                'producCol',
+                'dateIntsall',
+                'dateInspect',
+                'status',
+                'description',
+            ],
+        ]), $taskId->getMaterielInspect()->getValues());
+
+        // dd($data);
+
+        return $this->render('task/action.html.twig', [
+            'datas' => [$data],
+            'dataKeys' => ['Description', 'Date Install', 'Date Inspect', 'Status'],
+            'nom' => $taskId->getName(),
+            'action' => false,
+        ]);
     }
 }

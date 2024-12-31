@@ -23,9 +23,13 @@
         </li>
         <li>
             Tache: <br>
-            {% for task in user.task %}
-                <li>{{task.name}}</li>
-            {% endfor %}
+            {% if user.tasks is not empty %}
+              {% for task in user.tasks %}
+                  <li>{{task.name}}</li>
+              {% endfor %}
+              {% else %}
+              Aucune
+            {% endif %}
         </li>
       </ul>
     </div>
@@ -55,8 +59,8 @@
         {% embed 'tab.html.twig' %}
             {% block row %}
                 <tr>
-                    <td scope="row">{{data.id}}</td>
-                    <td scope="row">{{data.username}}</td>
+                    <td scope="row">{{ data.id }}</td>
+                    <td scope="row">{{ data.username }}</td>
                     <td scope="row">{{ data.roles|json_encode }}</td>
                 </tr>
             {% endblock %}

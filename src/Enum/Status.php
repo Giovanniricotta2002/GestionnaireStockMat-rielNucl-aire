@@ -15,10 +15,13 @@ enum Status: string
     case HorsService = 'hors_service';
     case EnCoursInstallation = 'en_cours_installation';
     case Retire = 'retire';
+    case Pending = 'pending';
+    case Inactive = 'inactive';
+    case Completed = 'completed';
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Null => '',
             self::EnAttente => 'En Attente',
             self::Inspecte => 'Inspecte',
@@ -30,6 +33,9 @@ enum Status: string
             self::HorsService => 'HS',
             self::EnCoursInstallation => 'En Cours Installation',
             self::Retire => 'Retire',
+            self::Pending => 'Pending',
+            self::Inactive => 'Inactive',
+            self::Completed => 'Completed',
         };
     }
 }

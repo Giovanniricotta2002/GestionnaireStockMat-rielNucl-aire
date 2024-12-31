@@ -35,11 +35,13 @@
                 </td>
                 {% if action %}
                     <td scope="row">
-                        <a href="{{ path('app_task_edit', {'taskId': data.id}) }}">
-                            Configuré
+                        <a href="{{ path('app_task_action', {'taskId': data.id}) }}">
+                            Action
                         </a>
-                        {% if data["qrcode"] is not empty %}
-                            <a href="{{ path('app_)}}"></a>
+                        {% if data["qrcode"] is empty %}
+                            <a href="{{ path('app_csv_generated_qrcode', {'taskId': data.id}) }}">
+                            Générer un QrCode
+                            </a>
                         {% endif %}
                     
                     {# <label>

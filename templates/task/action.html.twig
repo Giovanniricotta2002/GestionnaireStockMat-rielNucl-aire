@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('tab') }}
+{% endblock %}
+
+{% block body %}
+    <br>
+    {% embed 'tab.html.twig' %}
+        {% block row %}
+            {% for item in data %}
+                <tr>
+                    <td scope="row">{{item["description"]}}</td>
+                    <td scope="row">{{item["dateIntsall"]}}</td>
+                    <td scope="row">{{item["dateInspect"]}}</td>
+                    <td scope="row">
+                        <label>
+                            Status
+                        <select>
+
+                        </select>
+                        </label>
+                        {# {{item["status"]}} #}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+    
+{% endblock %}

@@ -1,5 +1,8 @@
 <menu class="menu">
   <li><a class="btn" href="{{ path("app_acceuil_index") }}">Acceuil</a></li>
+  {% if is_granted("ROLE_ADMIN") %}
+    <li><a class="btn" href="{{ path("app_csv_import") }}">Import Fichier</a></li>
+  {% endif %}
   <li><a class="btn" href="{{ path("app_recherche_init") }}">Tableau de Recherche</a></li>
   <li><a class="btn" href="{{ path("app_task_index") }}">Tache</a></li>
 </menu>
@@ -9,7 +12,7 @@
   display: flex;
   list-style: none;
   padding: 0;
-  width: 400px;
+  width: 50rem;
 }
 
 li {
