@@ -16,13 +16,17 @@
         {% block row %}
             {% for item in data %}
                 <tr>
-                    <td scope="row">{{item["description"]}}</td>
-                    <td scope="row">{{item["dateIntsall"]}}</td>
-                    <td scope="row">{{item["dateInspect"]}}</td>
+                    <td scope="row">{{ item["description"] }}</td>
+                    <td scope="row">{{ item["dateIntsall"]|date("h:i:s m/d/Y ") }}</td>
+                    <td scope="row">{{ item["dateInspect"]|date("h:i:s m/d/Y ") }}</td>
                     <td scope="row">
                         <label>
                             Status
                         <select>
+                            {% for statu in status %}
+                            {{status[0]}}
+                                {# <option value="{{statu['value']}}">{{statu}}</option #}
+                            {% endfor %}
 
                         </select>
                         </label>

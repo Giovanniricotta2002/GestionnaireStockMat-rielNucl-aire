@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MaterielInspection;
 use App\Entity\Task;
+use App\Enum\Status;
 use App\Repository\MaterielInspectionRepository;
 use App\Repository\TaskRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -108,13 +109,14 @@ class TaskController extends AbstractController
             ],
         ]), $taskId->getMaterielInspect()->getValues());
 
-        // dd($data);
+        // dd($this->serializer->normalize(Status::cases(), 'json'));
 
         return $this->render('task/action.html.twig', [
             'datas' => [$data],
             'dataKeys' => ['Description', 'Date Install', 'Date Inspect', 'Status'],
             'nom' => $taskId->getName(),
             'action' => false,
+            'status' => $this->serializer->normalize(Status::cases(), 'json'),
         ]);
     }
 }
