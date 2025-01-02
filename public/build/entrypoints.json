@@ -1,0 +1,36 @@
+{
+  "entrypoints": {
+    "test": {
+      "js": [
+        "/build/runtime.afb82317.js",
+        "/build/546.948b4d02.js",
+        "/build/230.6815e1bf.js",
+        "/build/test.3204d66f.js"
+      ]
+    },
+    "tabAction": {
+      "js": [
+        "/build/runtime.afb82317.js",
+        "/build/546.948b4d02.js",
+        "/build/851.f0bcb6ab.js",
+        "/build/tabAction.561fbe9b.js"
+      ]
+    },
+    "updateTaskAction": {
+      "js": [
+        "/build/runtime.afb82317.js",
+        "/build/546.948b4d02.js",
+        "/build/851.f0bcb6ab.js",
+        "/build/updateTaskAction.2a4bd548.js"
+      ]
+    },
+    "tab": {
+      "js": [
+        "/build/runtime.afb82317.js"
+      ],
+      "css": [
+        "/build/tab.75354d26.css"
+      ]
+    }
+  }
+}
