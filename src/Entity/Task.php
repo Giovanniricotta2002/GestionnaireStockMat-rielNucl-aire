@@ -6,6 +6,7 @@ use App\Repository\TaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -25,6 +26,7 @@ class Task
     private Collection $materielInspect;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[Ignore]
     private ?Utilisateur $utilisateurAffect = null;
 
     public function __construct()

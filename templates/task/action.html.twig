@@ -4,6 +4,7 @@
 
 {% block javascripts %}
 {{ parent() }}
+{{ encore_entry_script_tags('updateTaskAction') }}
 {% endblock %}
 
 {% block stylesheets %}
@@ -17,24 +18,20 @@
             {% for item in data %}
                 <tr>
                     <td scope="row">{{ item["description"] }}</td>
-                    <td scope="row">{{ item["dateIntsall"]|date("h:i:s m/d/Y ") }}</td>
-                    <td scope="row">{{ item["dateInspect"]|date("h:i:s m/d/Y ") }}</td>
+                    <td scope="row">{{ item["dateIntsall"]|date("h:i:s m/d/Y") }}</td>
+                    <td scope="row">{{ item["dateInspect"]|date("h:i:s m/d/Y") }}</td>
                     <td scope="row">
                         <label>
                             Status
-                        <select>
-                            {% for statu in status %}
-                            {{status[0]}}
-                                {# <option value="{{statu['value']}}">{{statu}}</option #}
-                            {% endfor %}
-
-                        </select>
+                            <select class="statusSelector" data-task-id="{{item['id']}}">
+                                {% for statu in [ {"name": "Null", "value": ""}, {"name": "EnAttente", "value": "en_attente"}, {"name": "Inspecte", "value": "inspecte"}, {"name": "Bon", "value": "bon"}, {"name": "Mauvais" , "value": "mauvais"}, {"name": "Installe", "value": "installe"}, {"name": "Repare", "value": "repare"}, {"name": "Remplace", "value": "remplace"}, {"name": "HorsService" , "value": "hors_service"}, {"name": "EnCoursInstallation", "value": "en_cours_installation"}, {"name": "Retire", "value": "retire"}, {"name": "Pending" , "value": "pending" }, {"name": "Inactive", "value": "inactive"}, {"name": "Completed", "value": "completed"} ] %}
+                                    <option value="{{statu['value']}}" {{ statu['value'] == item['status']['value'] ? 'selected' : '' }}>{{statu['name']}}</option>
+                                {% endfor %}
+                            </select>
                         </label>
-                        {# {{item["status"]}} #}
                     </td>
                 </tr>
             {% endfor %}
         {% endblock %}
     {% endembed %}
-    
 {% endblock %}

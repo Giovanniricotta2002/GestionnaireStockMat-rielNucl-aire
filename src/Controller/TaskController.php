@@ -7,8 +7,6 @@ use App\Entity\Task;
 use App\Enum\Status;
 use App\Repository\MaterielInspectionRepository;
 use App\Repository\TaskRepository;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use chillerlan\QRCode\QRCode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +18,8 @@ use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -50,7 +50,7 @@ class TaskController extends AbstractController
             $unset[] = [
                 'id' => $data->getId(),
                 'name' => $data->getName(),
-                'userIdentifier' => $data->getUtilisateurAffect() == null
+                'userIdentifier' => null == $data->getUtilisateurAffect()
                     ? null
                     : $data->getUtilisateurAffect()->getUserIdentifier(),
                 'qrcode' => null == $data->getUtilisateurAffect()
@@ -109,14 +109,30 @@ class TaskController extends AbstractController
             ],
         ]), $taskId->getMaterielInspect()->getValues());
 
-        // dd($this->serializer->normalize(Status::cases(), 'json'));
-
         return $this->render('task/action.html.twig', [
             'datas' => [$data],
             'dataKeys' => ['Description', 'Date Install', 'Date Inspect', 'Status'],
             'nom' => $taskId->getName(),
             'action' => false,
-            'status' => $this->serializer->normalize(Status::cases(), 'json'),
+            'status' => $this->serializer->serialize(
+                array_map(fn (Status $status) => [
+                    'name' => $status->name,
+                    'value' => $status->value,
+                ], Status::cases()),
+                'json'
+            ),
         ]);
+    }
+
+    #[Route('/update/{mi<\d*>}', name: '_update', methods: ['PUT'])]
+    public function update(MaterielInspection $mi, Request $request, EntityManagerInterface $em): Response
+    {
+        $data = $this->serializer->decode($request->getContent(), 'json');
+        $mi->setStatus(Status::from($data['status']));
+        $mi->setDateInspect(new \DateTime());
+        $em->persist($mi);
+        $em->flush();
+
+        return $this->json([]);
     }
 }
