@@ -60,7 +60,6 @@ class AcceuilController extends AbstractController
         $from->handleRequest($request);
 
         if ($from->isSubmitted() && $from->isValid()) {
-            // dd($from->getData());
             $newUser = $this->serializer->normalize($from->getData(), 'json');
 
             $u = new Utilisateur();

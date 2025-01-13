@@ -55,12 +55,12 @@ class FileUploader
         $this->fileName = $string ?? $this->fileName;
 
         $data = [];
-
+        
         if (($handle = fopen($this->getTargetDirectory().'/'.$this->getFileName(), 'r')) !== false) {
             // Lire les en-têtes
             $headers = explode(',', fgetcsv($handle, 1000, ';')[0]);
+            
             // Lire les lignes suivantes
-
             for ($i = 0; ($rowRaw = fgetcsv($handle, 1000, ';')) !== false; $i++) {
                 for ($j = 0; $j < count($headers); $j++) {
                     $row = explode(',', $rowRaw[0]);
@@ -70,6 +70,7 @@ class FileUploader
 
             fclose($handle);
         }
+
         $this->data = $data;
 
         return $this;

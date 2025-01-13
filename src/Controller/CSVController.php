@@ -59,7 +59,7 @@ class CSVController extends AbstractController
 
             return $this->redirect($this->generateUrl('app_task_index', ['id' => $request->query->get('ids')]));
         }
-        // dd($request->query->get('taskId'));
+
         $data = $this->generateUrl(
             'app_task_index',
             ['id' => $request->query->get('ids')],
