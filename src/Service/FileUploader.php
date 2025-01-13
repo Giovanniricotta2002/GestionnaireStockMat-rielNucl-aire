@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\MaterielInspection;
 use App\Enum\Status;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,21 +14,17 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-use function PHPUnit\Framework\isNull;
-
 class FileUploader
 {
-
     private Serializer $serializer;
     private string $fileName = '';
-    private mixed $data = "";
+    private mixed $data = '';
 
     public function __construct(
         private string $targetDirectory,
         private SluggerInterface $slugger,
         private EntityManagerInterface $em,
-    )
-    {
+    ) {
         $encoded = [new XmlEncoder(), new JsonEncode(), new CsvEncoder([';'])];
         $normalizers = [new ObjectNormalizer()];
 
@@ -56,24 +51,25 @@ class FileUploader
 
     public function serializeFile(?string $string = null): FileUploader
     {
-        if (!isNull($string)) {
-            $this->fileName = $string;
-        }
+
+        $this->fileName = $string ?? $this->fileName;
 
         $data = [];
 
-        if (($handle = fopen($this->getTargetDirectory() . '/' . $this->getFileName(), 'r')) !== false) {
+        if (($handle = fopen($this->getTargetDirectory().'/'.$this->getFileName(), 'r')) !== false) {
             // Lire les en-têtes
-            $headers = fgetcsv($handle, 1000, ';');
-
+            $headers = explode(',', fgetcsv($handle, 1000, ';')[0]);
             // Lire les lignes suivantes
-            while (($row = fgetcsv($handle, 1000, ';')) !== false) {
-                $data[] = array_combine($headers, $row);
+
+            for ($i = 0; ($rowRaw = fgetcsv($handle, 1000, ';')) !== false; $i++) {
+                for ($j = 0; $j < count($headers); $j++) {
+                    $row = explode(',', $rowRaw[0]);
+                    $data[$i][$headers[$j]] = $row[$j];
+                }
             }
 
             fclose($handle);
         }
-
         $this->data = $data;
 
         return $this;
@@ -85,8 +81,8 @@ class FileUploader
             foreach ($chunk as $data) {
                 $mi = new MaterielInspection();
                 $mi->setProductCol($data['product_col']);
-                $mi->setDateIntsall(new DateTime($data['date_intsall']));
-                $mi->setDateInspect(new DateTime($data['date_inspect']));
+                $mi->setDateIntsall(new \DateTime($data['date_install']));
+                $mi->setDateInspect(new \DateTime($data['date_inspect']));
                 $mi->setStatus(Status::from($data['status']));
                 $mi->setDescription($data['description']);
                 $this->em->persist($mi);
@@ -110,6 +106,6 @@ class FileUploader
 
     public function getData(): mixed
     {
-        return $this->data;    
+        return $this->data;
     }
 }

@@ -25,6 +25,7 @@ Encore
     // .addEntry('qrScannerWorker', './assets/lib/qr-scanner-worker.min.js')
     .addEntry('test', './assets/test.js')
     .addEntry('tabAction', './assets/tabAction.js')
+    .addEntry('updateTaskAction', './assets/updateTaskAction.js')
     .addStyleEntry('tab', './assets/styles/app.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

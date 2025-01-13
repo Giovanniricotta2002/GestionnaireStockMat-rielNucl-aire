@@ -41,15 +41,19 @@ class AcceuilController extends AbstractController
         }
 
         return $this->render('acceuil/index.html.twig', [
-            'user' => $user 
+            'user' => $user,
         ]);
     }
 
-
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: '_index_admin')]
-    public function indexAdmin(#[CurrentUser()] ?Utilisateur $admin, EntityManagerInterface $em, UtilisateurRepository $uRepository, Request $request, UserPasswordHasherInterface $passwordHasher): Response
-    {
+    public function indexAdmin(
+        #[CurrentUser()] ?Utilisateur $admin,
+        EntityManagerInterface $em,
+        UtilisateurRepository $uRepository,
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+    ): Response {
         $newUser = new Utilisateur();
         $from = $this->createForm(MakeUserType::class, $newUser);
 
@@ -58,7 +62,7 @@ class AcceuilController extends AbstractController
         if ($from->isSubmitted() && $from->isValid()) {
             // dd($from->getData());
             $newUser = $this->serializer->normalize($from->getData(), 'json');
-            
+
             $u = new Utilisateur();
             $hashedPassword = $passwordHasher->hashPassword($u, $newUser['password']);
 
@@ -78,8 +82,17 @@ class AcceuilController extends AbstractController
             'user' => $admin,
             'dataKeys' => ['id', 'UserName', 'Roles'],
             'action' => false,
-            'datas' => $this->serializer->normalize($uRepository->findAll(), 'json'),
-            'form' => $from->createView()
+            'datas' => $this->serializer->normalize(
+                array_map(
+                    fn (Utilisateur $user) => [
+                        'id' => $user->getId(),
+                        'username' => $user->getUsername(),
+                        'roles' => $user->getRoles(),
+                    ],
+                    $uRepository->findAll()
+                )
+            ),
+            'form' => $from->createView(),
         ]);
     }
 }
