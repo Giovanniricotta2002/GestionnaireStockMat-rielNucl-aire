@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Form\MaterielInspectionRechercheType;
 use App\Repository\MaterielInspectionRepository;
 use App\Tools\MaterielInspectionRecherche;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
